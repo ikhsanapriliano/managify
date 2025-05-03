@@ -5,6 +5,6 @@ export const newUser = (data: User): TUser => {
   return {
     id: data.id,
     username: data.username,
-    role: data.role
-  }
-}
+    role: data.role,
+  };
+};

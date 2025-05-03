@@ -13,6 +13,11 @@ import { ZodError } from "zod";
 
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
+import {
+  CErrorResponse,
+  EErrorType,
+  type TCustomTRPCErrorData,
+} from "@/types/global";
 
 /**
  * 1. CONTEXT
@@ -45,11 +50,21 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
-  errorFormatter({ shape, error }) {
+  errorFormatter({
+    shape,
+    error,
+  }): typeof shape & { data: TCustomTRPCErrorData } {
+    const isCustomError = error.cause instanceof CErrorResponse;
+
     return {
       ...shape,
       data: {
         ...shape.data,
+        code: error.code,
+        type: isCustomError ? error.cause.type : EErrorType.INTERNAL,
+        debug: isCustomError ? error.cause.debug : "advance system error",
+        message: isCustomError ? error.cause.message : shape.message,
+        fieldError: isCustomError ? error.cause.field : null,
         zodError:
           error.cause instanceof ZodError ? error.cause.flatten() : null,
       },

@@ -3,7 +3,7 @@ const page = () => {
     <main>
       <div>asdasd</div>
     </main>
-  )
-}
+  );
+};
 
-export default page
+export default page;

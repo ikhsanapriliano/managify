@@ -1,8 +1,3 @@
-export const publicEndpoint = [
-    "/auth/register",
-    "/auth/login"
-]
+export const publicEndpoint = ["/auth/register", "/auth/login"];
 
-export const protectedEndPoint = [
-    "/"
-]
+export const protectedEndPoint = ["/"];

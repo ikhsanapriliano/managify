@@ -1,7 +1,7 @@
-import type { Role } from "@prisma/client"
+import type { Role } from "@prisma/client";
 
 export type TUser = {
-  id: string
-  username: string
-  role: Role
-}
+  id: string;
+  username: string;
+  role: Role;
+};

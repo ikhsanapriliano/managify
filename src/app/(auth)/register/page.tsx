@@ -1,9 +1,12 @@
-const page = () => {
-    return (
-        <main>
-            <p>sadasdasd</p>
-        </main>
-    )
-}
+import AuthContainer from "../_components/AuthContainer";
+import RegisterForm from "./_components/RegisterForm";
 
-export default page
+const page = () => {
+  return (
+    <AuthContainer>
+      <RegisterForm />
+    </AuthContainer>
+  );
+};
+
+export default page;

@@ -1,0 +1,87 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema, type TRegisterSchema } from "@/schema/auth";
+import { Form } from "@/components/ui/form";
+import { api } from "@/trpc/react";
+import CInputText from "@/components/form/CInputText";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { handleTRPCClientError } from "@/lib/error";
+import { showSuccess } from "@/lib/toaster";
+import { useState } from "react";
+
+const RegisterForm = () => {
+  const form = useForm<TRegisterSchema>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const mutation = api.auth.register.useMutation({
+    onMutate: () => {
+      setIsLoading(true);
+    },
+    onSettled: () => {
+      setIsLoading(false);
+    },
+    onSuccess: () => {
+      showSuccess("register success");
+    },
+    onError: (error) => {
+      handleTRPCClientError(error.data, form);
+    },
+  });
+
+  const onSubmit = (values: TRegisterSchema) => {
+    mutation.mutate(values);
+  };
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex w-[400px] flex-col gap-6 rounded-lg border p-6"
+      >
+        <h1>Managify</h1>
+        <CInputText
+          form={form}
+          name="username"
+          label="Username"
+          placeholder="Username"
+        />
+        <CInputText
+          form={form}
+          name="password"
+          label="Password"
+          placeholder="Password"
+          isPassword
+        />
+        <CInputText
+          form={form}
+          name="confirmPassword"
+          label="Confirm Password"
+          placeholder="Confirm Password"
+          isPassword
+        />
+        <div className="flex flex-col gap-2">
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Loading..." : "Register"}
+          </Button>
+          <div className="flex justify-center gap-1 text-sm">
+            <p>already registered?</p>
+            <Link href={"/"} className="underline">
+              login
+            </Link>
+          </div>
+        </div>
+      </form>
+    </Form>
+  );
+};
+
+export default RegisterForm;

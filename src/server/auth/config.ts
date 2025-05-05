@@ -34,6 +34,7 @@ declare module "next-auth/jwt" {
 }
 
 export const authConfig = {
+  secret: process.env.AUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Credentials",

@@ -18,16 +18,24 @@ export const registerService = async (
       throw new CFieldError("username", "username already exist");
     }
 
-    await db.user.create({
-      data: {
-        username: payload.username,
-        password: hashPassword(payload.password),
-      },
+    await db.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          username: payload.username,
+          password: hashPassword(payload.password),
+        },
+      });
+
+      await tx.wallet.create({
+        data: {
+          userId: user.id,
+          amount: 0,
+        },
+      });
     });
 
     return null;
   } catch (error: Error | unknown) {
-    console.log("lololo", error instanceof CFieldError);
     handleTRPCError(error);
   }
 };

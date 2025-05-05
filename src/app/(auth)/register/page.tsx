@@ -1,12 +1,7 @@
-import AuthContainer from "../_components/AuthContainer";
 import RegisterForm from "./_components/RegisterForm";
 
 const page = () => {
-  return (
-    <AuthContainer>
-      <RegisterForm />
-    </AuthContainer>
-  );
+  return <RegisterForm />;
 };
 
 export default page;

@@ -2,7 +2,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const AuthContainer = ({ children }: Props) => {
+const layout = ({ children }: Props) => {
   return (
     <main className="flex h-screen w-full items-center justify-center">
       {children}
@@ -10,4 +10,4 @@ const AuthContainer = ({ children }: Props) => {
   );
 };
 
-export default AuthContainer;
+export default layout;

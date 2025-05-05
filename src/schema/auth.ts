@@ -14,7 +14,7 @@ export const registerSchema = z
 export type TRegisterSchema = z.infer<typeof registerSchema>;
 
 export const loginSchema = z.object({
-  username: z.string(),
+  username: z.string().min(6),
   password: z.string().min(8),
 });
 

@@ -38,27 +38,22 @@ export const authConfig = {
     CredentialsProvider({
       name: "Credentials",
       authorize: async (credentials): Promise<TUser | null> => {
-        try {
-          const data = loginSchema.parse(credentials);
-          const user = await db.user.findFirst({
-            where: {
-              username: data.username,
-            },
-          });
+        const data = loginSchema.parse(credentials);
+        const user = await db.user.findFirst({
+          where: {
+            username: data.username,
+          },
+        });
 
-          if (!user) {
-            throw new Error("user not found");
-          }
-
-          if (!comparePassword(data.password, user.password)) {
-            throw new Error("incorrect password");
-          }
-
-          return newUser(user);
-        } catch (error) {
-          console.error("Auth Error: ", error);
+        if (!user) {
           return null;
         }
+
+        if (!comparePassword(data.password, user.password)) {
+          return null;
+        }
+
+        return newUser(user);
       },
     }),
   ],
@@ -71,11 +66,12 @@ export const authConfig = {
 
       return token;
     },
-    session: ({ session, user }) => ({
+    session: ({ session, token }) => ({
       ...session,
       user: {
         ...session.user,
-        id: user.id,
+        username: token.username,
+        role: token.role,
       },
     }),
   },

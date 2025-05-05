@@ -2,46 +2,44 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema, type TRegisterSchema } from "@/schema/auth";
+import { loginSchema, type TLoginSchema } from "@/schema/auth";
 import { Form } from "@/components/ui/form";
-import { api } from "@/trpc/react";
 import CInputText from "@/components/form/CInputText";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { handleTRPCClientError } from "@/lib/error";
-import { showSuccess } from "@/lib/toaster";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { showError } from "@/lib/toaster";
 import { useRouter } from "next/navigation";
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const router = useRouter();
-  const form = useForm<TRegisterSchema>({
-    resolver: zodResolver(registerSchema),
+  const form = useForm<TLoginSchema>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
       password: "",
-      confirmPassword: "",
     },
   });
   const [isLoading, setIsLoading] = useState(false);
-  const mutation = api.auth.register.useMutation({
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onSettled: () => {
-      setIsLoading(false);
-    },
-    onSuccess: () => {
-      showSuccess("register success");
-      router.push("/login");
-    },
-    onError: (error) => {
-      handleTRPCClientError(error.data, form);
-    },
-  });
 
-  const onSubmit = (values: TRegisterSchema) => {
-    mutation.mutate(values);
+  const onSubmit = async (values: TLoginSchema) => {
+    setIsLoading(true);
+    const res = await signIn("credentials", {
+      redirect: false,
+      username: values.username,
+      password: values.password,
+    });
+
+    if (res) {
+      setIsLoading(false);
+      if (res.error) {
+        showError("Login Failed!", "incorrect username or password");
+        return;
+      }
+
+      router.push("/");
+    }
   };
 
   return (
@@ -64,21 +62,14 @@ const RegisterForm = () => {
           placeholder="Password"
           isPassword
         />
-        <CInputText
-          form={form}
-          name="confirmPassword"
-          label="Confirm Password"
-          placeholder="Confirm Password"
-          isPassword
-        />
         <div className="flex flex-col gap-2">
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Register"}
+            {isLoading ? "Loading..." : "Login"}
           </Button>
           <div className="flex justify-center gap-1 text-sm">
-            <p>already registered?</p>
-            <Link href={"/login"} className="underline">
-              login
+            <p>not registered?</p>
+            <Link href={"/register"} className="underline">
+              register
             </Link>
           </div>
         </div>
@@ -87,4 +78,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

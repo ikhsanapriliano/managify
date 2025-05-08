@@ -1,8 +1,8 @@
 import { hashPassword } from "@/lib/bcrypt";
 import { handleTRPCError } from "@/lib/error";
-import type { TRegisterSchema } from "@/schema/auth";
+import type { TRegisterSchema } from "@/schema/auth.schema";
 import { db } from "@/server/db";
-import { CFieldError } from "@/types/global";
+import { CFieldError } from "@/types/global.type";
 
 export const registerService = async (
   payload: TRegisterSchema,
@@ -19,17 +19,10 @@ export const registerService = async (
     }
 
     await db.$transaction(async (tx) => {
-      const user = await tx.user.create({
+      await tx.user.create({
         data: {
           username: payload.username,
           password: hashPassword(payload.password),
-        },
-      });
-
-      await tx.wallet.create({
-        data: {
-          userId: user.id,
-          amount: 0,
         },
       });
     });

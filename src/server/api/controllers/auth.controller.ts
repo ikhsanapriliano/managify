@@ -1,4 +1,4 @@
-import { registerSchema } from "@/schema/auth";
+import { registerSchema } from "@/schema/auth.schema";
 import { publicProcedure } from "../trpc";
 import { registerService } from "../services/auth.service";
 

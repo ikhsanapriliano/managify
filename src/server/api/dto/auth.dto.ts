@@ -1,4 +1,4 @@
-import type { TUser } from "@/types/auth";
+import type { TUser } from "@/types/auth.type";
 import type { User } from "@prisma/client";
 
 export const newUser = (data: User): TUser => {

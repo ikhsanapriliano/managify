@@ -17,7 +17,7 @@ import {
   CErrorResponse,
   EErrorType,
   type TCustomTRPCErrorData,
-} from "@/types/global";
+} from "@/types/global.type";
 
 /**
  * 1. CONTEXT

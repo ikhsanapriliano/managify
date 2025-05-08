@@ -4,10 +4,10 @@ import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { db } from "@/server/db";
-import { loginSchema } from "@/schema/auth";
+import { loginSchema } from "@/schema/auth.schema";
 import { comparePassword } from "@/lib/bcrypt";
-import type { TUser } from "@/types/auth";
-import { newUser } from "../api/dto/auth";
+import type { TUser } from "@/types/auth.type";
+import { newUser } from "../api/dto/auth.dto";
 import type { Role } from "@prisma/client";
 import type { JWT as _JWT } from "next-auth/jwt";
 

@@ -4,7 +4,7 @@ import {
   CFieldError,
   EErrorType,
   type TCustomTRPCErrorData,
-} from "@/types/global";
+} from "@/types/global.type";
 import { TRPCError } from "@trpc/server";
 import type {
   DefaultErrorData,
@@ -38,7 +38,6 @@ export const handleTRPCError = (error: Error | unknown) => {
   if (error instanceof CBadRequestError) {
     errorCode = "BAD_REQUEST";
     cause.type = EErrorType.BAD;
-    cause.message = error.message;
   }
 
   throw new TRPCError({

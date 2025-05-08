@@ -1,4 +1,4 @@
-import type { TCInput } from "@/types/component";
+import type { TCInput } from "@/types/component.type";
 import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";

@@ -34,11 +34,8 @@ export class CFieldError extends Error {
 }
 
 export class CBadRequestError extends Error {
-  badMessage: string;
-
-  constructor(message: string, badMessage: string) {
+  constructor(message: string) {
     super(message);
-    this.badMessage = badMessage;
   }
 }
 
@@ -49,4 +46,11 @@ export type TCustomTRPCErrorData = {
   message: string;
   zodError: ReturnType<ZodError["flatten"]> | null;
   fieldError: CErrorResponse["field"] | null;
+};
+
+export type TDateFilter = {
+  createdAt: {
+    gte: Date;
+    lte: Date;
+  };
 };

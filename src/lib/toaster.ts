@@ -3,6 +3,7 @@ import { toast } from "sonner";
 export const showSuccess = (description: string) => {
   toast.success("Action Success!", {
     description,
+    className: "!text-black",
   });
 };
 

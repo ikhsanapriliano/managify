@@ -13,11 +13,15 @@ export const findTransactionsService = async (
   payload?: TTransactionFilterSchema,
 ): Promise<TTransaction[] | undefined> => {
   try {
+    const userId = await getUserId();
     const filters = transformFilters<TTransactionFilterSchema>(payload);
     const dateFilter = transformDateFilter(filters.startDate, filters.endDate);
 
     const data = await db.transaction.findMany({
-      where: dateFilter,
+      where: {
+        ...dateFilter,
+        userId,
+      },
     });
 
     return newTransactions(data);

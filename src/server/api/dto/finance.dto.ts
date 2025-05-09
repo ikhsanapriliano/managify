@@ -9,9 +9,9 @@ export const newTransactions = (payload: Transaction[]): TTransaction[] => {
       id: item.id,
       amount: item.amount,
       purpose: item.purpose,
-      date: item.updatedAt.toLocaleDateString("id-ID", { day: "numeric" }),
-      month: item.updatedAt.toLocaleDateString("id-ID", { month: "long" }),
-      year: item.updatedAt.toLocaleDateString("id-ID", { year: "numeric" }),
+      date: item.createdAt.toLocaleDateString("id-ID", { day: "numeric" }),
+      month: item.createdAt.toLocaleDateString("id-ID", { month: "long" }),
+      year: item.createdAt.toLocaleDateString("id-ID", { year: "numeric" }),
       isEdited: item.createdAt != item.updatedAt,
     });
   });

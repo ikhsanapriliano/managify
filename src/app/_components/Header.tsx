@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import type { TRootState } from "@/store";
 import {
   setIsDesktopOpen,
@@ -8,6 +7,7 @@ import {
 } from "@/store/slices/sidebar.slice";
 import { LuMenu } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
+import LogoutDialog from "./LogoutDialog";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -35,9 +35,7 @@ const Header = () => {
       >
         <LuMenu />
       </button>
-      <div>
-        <Button>logout</Button>
-      </div>
+      <LogoutDialog />
     </header>
   );
 };

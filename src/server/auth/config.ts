@@ -28,6 +28,7 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT {
+    id?: string;
     username: string;
     role: Role;
   }
@@ -61,6 +62,7 @@ export const authConfig = {
   callbacks: {
     jwt: ({ token, user }) => {
       if (user) {
+        token.id = user.id;
         token.username = user.username;
         token.role = user.role;
       }
@@ -71,6 +73,7 @@ export const authConfig = {
       ...session,
       user: {
         ...session.user,
+        id: token.id,
         username: token.username,
         role: token.role,
       },

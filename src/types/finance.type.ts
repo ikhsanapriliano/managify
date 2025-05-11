@@ -1,9 +1,15 @@
+import type { TTransactionTable } from "./table.type";
+
 export type TTransaction = {
   id: string;
-  amount: number;
+  amount: bigint;
   purpose: string;
+  time: string;
   date: string;
-  month: string;
-  year: string;
   isEdited: boolean;
+};
+
+export type TTransactions = {
+  total: string;
+  items: TTransactionTable[];
 };

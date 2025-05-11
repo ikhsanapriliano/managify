@@ -3,6 +3,7 @@ import type { ZodError } from "zod";
 export enum EErrorType {
   FIELD = "field error",
   BAD = "bad request",
+  NOT_FOUND = "not found",
   INTERNAL = "internal server error",
 }
 
@@ -39,6 +40,12 @@ export class CBadRequestError extends Error {
   }
 }
 
+export class CDetailNotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}
+
 export type TCustomTRPCErrorData = {
   type: EErrorType;
   code: string;
@@ -53,4 +60,11 @@ export type TDateFilter = {
     gte: Date;
     lte: Date;
   };
+};
+
+export type TPagination = {
+  page: number;
+  limit: number;
+  total_page: number;
+  total_item: number;
 };

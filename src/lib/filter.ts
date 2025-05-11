@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 import type { TDateFilter } from "@/types/global.type";
+import type { Prisma } from "@prisma/client";
 
 export const transformFilters = <T extends Record<string, unknown>>(
   payload: unknown,
@@ -10,7 +9,7 @@ export const transformFilters = <T extends Record<string, unknown>>(
   if (payload) {
     filters = Object.fromEntries(
       Object.entries(payload).filter(([key, value]) => {
-        if (value !== undefined && value !== null) {
+        if (value) {
           return [key, value];
         }
       }),
@@ -21,8 +20,8 @@ export const transformFilters = <T extends Record<string, unknown>>(
 };
 
 export const transformDateFilter = (
-  startDate?: Date,
-  endDate?: Date,
+  startDate?: Date | null,
+  endDate?: Date | null,
 ): TDateFilter | undefined => {
   if (startDate && endDate) {
     const result: TDateFilter = {
@@ -34,4 +33,15 @@ export const transformDateFilter = (
 
     return result;
   }
+};
+
+export const transformLikeFilter = (
+  payload: string | undefined,
+): Prisma.StringFilter | undefined => {
+  if (!payload) return undefined;
+
+  return {
+    contains: payload,
+    mode: "insensitive",
+  };
 };

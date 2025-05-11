@@ -4,14 +4,12 @@ import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 
 const CInputText = ({
+  type = "text",
   name,
   form,
   label,
   placeholder,
-  isPassword,
-}: TCInput & {
-  isPassword?: boolean;
-}) => {
+}: TCInput) => {
   return (
     <FormField
       control={form.control}
@@ -21,18 +19,45 @@ const CInputText = ({
 
         return (
           <FormItem>
-            {label && <FormLabel>{label}</FormLabel>}
+            {label && <FormLabel className="font-normal">{label}</FormLabel>}
             <FormControl>
               <Input
                 placeholder={placeholder}
-                type={isPassword ? "password" : "text"}
+                type={type}
                 className={cn(
                   fieldError && "!border-red-500 focus-visible:!ring-red-500",
                 )}
-                onKeyDown={() => {
+                onKeyDown={(e) => {
                   form.clearErrors();
+
+                  if (
+                    type === "tel" &&
+                    !/^\d$/.test(e.key) &&
+                    ![
+                      "Backspace",
+                      "Tab",
+                      "ArrowLeft",
+                      "ArrowRight",
+                      "Delete",
+                    ].includes(e.key) &&
+                    !(e.ctrlKey || e.metaKey)
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
+                onFocus={() => {
+                  if (type === "tel" && field.value === 0) {
+                    form.setValue(name, "");
+                  }
                 }}
                 {...field}
+                onChange={(e) => {
+                  if (type === "tel") {
+                    form.setValue(name, Number(e.target.value));
+                  } else {
+                    field.onChange(e);
+                  }
+                }}
               />
             </FormControl>
             {fieldError && <p className="text-sm text-red-500">{fieldError}</p>}

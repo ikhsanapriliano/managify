@@ -59,21 +59,21 @@ const RegisterForm = () => {
         />
         <CInputText
           form={form}
+          type="password"
           name="password"
           label="Password"
           placeholder="Password"
-          isPassword
         />
         <CInputText
           form={form}
+          type="password"
           name="confirmPassword"
           label="Confirm Password"
           placeholder="Confirm Password"
-          isPassword
         />
         <div className="flex flex-col gap-2">
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Register"}
+          <Button type="submit" isLoading={isLoading}>
+            Register
           </Button>
           <div className="flex justify-center gap-1 text-sm">
             <p>already registered?</p>

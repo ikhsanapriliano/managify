@@ -34,7 +34,7 @@ const LoginForm = () => {
     if (res) {
       setIsLoading(false);
       if (res.error) {
-        showError("Login Failed!", "incorrect username or password");
+        showError("Login Failed", "incorrect username or password");
         return;
       }
 
@@ -57,14 +57,14 @@ const LoginForm = () => {
         />
         <CInputText
           form={form}
+          type="password"
           name="password"
           label="Password"
           placeholder="Password"
-          isPassword
         />
         <div className="flex flex-col gap-2">
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Login"}
+          <Button type="submit" isLoading={isLoading}>
+            Login
           </Button>
           <div className="flex justify-center gap-1 text-sm">
             <p>not registered?</p>

@@ -1,5 +1,6 @@
 import {
   CBadRequestError,
+  CDetailNotFoundError,
   CErrorResponse,
   CFieldError,
   EErrorType,
@@ -12,9 +13,10 @@ import type {
 } from "@trpc/server/unstable-core-do-not-import";
 import type { UseFormReturn } from "react-hook-form";
 import { showError } from "./toaster";
+import { notFound } from "next/navigation";
 
 export const handleTRPCError = (error: Error | unknown) => {
-  let errorCode: "INTERNAL_SERVER_ERROR" | "BAD_REQUEST" =
+  let errorCode: "INTERNAL_SERVER_ERROR" | "BAD_REQUEST" | "NOT_FOUND" =
     "INTERNAL_SERVER_ERROR";
 
   const cause = new CErrorResponse(
@@ -38,6 +40,11 @@ export const handleTRPCError = (error: Error | unknown) => {
   if (error instanceof CBadRequestError) {
     errorCode = "BAD_REQUEST";
     cause.type = EErrorType.BAD;
+  }
+
+  if (error instanceof CDetailNotFoundError) {
+    errorCode = "NOT_FOUND";
+    cause.type = EErrorType.NOT_FOUND;
   }
 
   throw new TRPCError({
@@ -69,6 +76,8 @@ export const handleTRPCClientError = (
         }
 
         return;
+      case EErrorType.NOT_FOUND:
+        notFound();
       default:
         showError("Internal Server Error", data.message);
     }

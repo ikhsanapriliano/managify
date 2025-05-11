@@ -4,6 +4,7 @@ export const showSuccess = (description: string) => {
   toast.success("Action Success!", {
     description,
     className: "!text-black",
+    descriptionClassName: "!text-gray-600",
   });
 };
 

@@ -13,7 +13,7 @@ const DesktopSidebar = () => {
   return (
     <aside
       className={cn(
-        "hidden min-h-screen w-[300px] flex-col border-r p-6 lg:flex",
+        "hidden min-h-screen w-[300px] shrink-0 flex-col border-r p-6 lg:flex",
         !isOpen && "lg:hidden",
       )}
     >

@@ -20,3 +20,18 @@ export async function getUserId(): Promise<string> {
     throw error;
   }
 }
+
+export function transformSearchParams(
+  payload: Record<string, string | null>,
+): Record<string, string | undefined> {
+  const entries = Object.entries(payload).map(([key, value]) => [
+    key,
+    value ?? undefined,
+  ]);
+
+  return Object.fromEntries(entries);
+}
+
+export function toDateSchema(payload: string | null): Date | undefined {
+  return payload ? new Date(payload) : undefined;
+}

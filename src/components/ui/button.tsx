@@ -40,10 +40,12 @@ function Button({
   variant,
   size,
   asChild = false,
+  isLoading,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
+    isLoading?: boolean;
   }) {
   const Comp = asChild ? Slot : "button";
 
@@ -54,8 +56,11 @@ function Button({
         buttonVariants({ variant, size, className }),
         "cursor-pointer",
       )}
+      disabled={isLoading || props.disabled}
       {...props}
-    />
+    >
+      {isLoading ? "Loading..." : props.children}
+    </Comp>
   );
 }
 
